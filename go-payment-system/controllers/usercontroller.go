@@ -9,7 +9,7 @@ import (
 )
 
 func RegisterUser(context *gin.Context) {
-	var user models.User
+	var user models.FourthPartSystemUser
 	if err := context.ShouldBindJSON(&user); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()

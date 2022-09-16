@@ -47,9 +47,10 @@ func initRouter() *gin.Engine {
 	// }
 	router.POST("/users/authenticate", controllers.GenerateToken)
 	router.POST("/user/register", controllers.RegisterUser)
-	secured := router.Group("/secured").Use(middlewares.Auth())
+	routerAuth := router.Use(middlewares.Auth()) // routerAuth 是要登入才能使用的路由, 通過 Auth() 中介軟體驗證
 	{
-		secured.GET("/ping", controllers.Ping)
+		routerAuth.GET("/ping", controllers.Ping)
+		routerAuth.GET("/payement/payout", controllers.GetPayoutData)
 	}
 	return router
 }

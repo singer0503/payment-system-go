@@ -9,27 +9,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type TokenRequest struct {
+type PayoutRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type TokenResponse struct {
+type PayoutResponse struct {
 	Id       uint   `json:"id"`
 	Username string `json:"username"`
 	Role     string `json:"role"`
 	Token    string `json:"token"`
 }
 
-func GenerateToken(context *gin.Context) {
-	var request TokenRequest
-	var user models.FourthPartSystemUser
+func GetPayoutData(context *gin.Context) {
+	var request PayoutRequest
+
 	if err := context.ShouldBindJSON(&request); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
-
+	var user models.FourthPartSystemUser
 	// check if email exists and password is correct
 	record := database.Instance.Where("username = ?", request.Username).First(&user)
 	if record.Error != nil {
@@ -38,7 +38,6 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	//credentialError := user.CheckPassword(request.Password) // Note: 先不要加密比對
 	var credentialError string = ""
 	if request.Password != user.Password {
 		credentialError = "wrong password"

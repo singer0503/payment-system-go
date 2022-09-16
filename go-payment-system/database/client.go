@@ -29,7 +29,8 @@ func Connect(connectionString string) {
 	log.Println("Connected to Database!")
 }
 
-func Migrate() {
-	Instance.AutoMigrate(&models.User{})
+func Migrate() { // gorm 會自動建立 table
+	Instance.AutoMigrate(&models.FourthPartSystemUser{})
+	Instance.AutoMigrate(&models.FourthPartyWithdraw{})
 	log.Println("Database Migration Completed!")
 }

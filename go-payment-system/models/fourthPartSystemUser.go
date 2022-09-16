@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func (User) TableName() string { // 給 gorm 用的 TableName, 讓開頭變大寫
-	return "User"
+func (FourthPartSystemUser) TableName() string { // 給 gorm 用的 TableName, 讓開頭變大寫
+	return "FourthPartSystemUser" // 資料表名稱 gorm 會抓取這個名子
 }
 
-type User struct {
+type FourthPartSystemUser struct {
 	gorm.Model        // gorm.Model 規範為模型添加了一些默認屬性，例如 id、創建日期、修改日期和刪除日期。
 	Name       string `json:"name"`
 	Username   string `json:"username" gorm:"unique"`
@@ -18,12 +18,8 @@ type User struct {
 	Role       string `json:"role"`
 }
 
-type Role struct {
-	Admin string `json:"admin"`
-	User  string `json:"user"`
-}
-
-func (user *User) HashPassword(password string) error {
+// 註冊時，將密碼加密
+func (user *FourthPartSystemUser) HashPassword(password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
 		return err
@@ -32,7 +28,8 @@ func (user *User) HashPassword(password string) error {
 	return nil
 }
 
-func (user *User) CheckPassword(providedPassword string) error {
+// 登入時，比對密碼
+func (user *FourthPartSystemUser) CheckPassword(providedPassword string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(providedPassword))
 	if err != nil {
 		return err
