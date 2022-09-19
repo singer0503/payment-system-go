@@ -17,6 +17,7 @@ type FourthPartyWithdraw struct {
 	PaymentType  string     `gorm:"column:PaymentType"`
 	ActualAmount float64    `gorm:"column:ActualAmount"`
 	CreatedAt    *time.Time `gorm:"column:CreatedAt"`
+	ApproveId    int        `gorm:"column:ApproveId"`
 }
 
 // // 註冊時，將密碼加密

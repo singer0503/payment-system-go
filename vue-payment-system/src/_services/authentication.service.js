@@ -21,7 +21,6 @@ function login(username, password) {
             console.log('user');
             console.log(user);
             currentUserSubject.next(user);
-
             return user;
         });
 }

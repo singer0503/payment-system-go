@@ -17,7 +17,7 @@ export const router = new Router({
         { 
             path: '/', 
             component: HomePage, 
-            meta: { authorize: [] } 
+            meta: { authorize: [Role.User, Role.Admin] } 
         },
         { 
             path: '/payout', 

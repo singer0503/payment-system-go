@@ -5,6 +5,7 @@ import (
 	"go-payment-system/database"
 	"go-payment-system/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,14 +50,14 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 
-	tokenString, err := auth.GenerateJWT(user.Role, user.Username)
+	tokenString, err := auth.GenerateJWT(user.Role, strconv.FormatUint(uint64(user.Id), 10))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		context.Abort()
 		return
 	}
 	var response TokenResponse
-	response.Id = user.ID
+	response.Id = user.Id
 	response.Username = user.Username
 	response.Role = user.Role
 	response.Token = tokenString

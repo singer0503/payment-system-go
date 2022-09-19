@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -10,18 +11,20 @@ import (
 var jwtKey = []byte("Here need a set of secret strings, replace him")
 
 type JWTClaim struct {
-	Username string `json:"username"`
-	Role     string `json:"role"`
+	Unique_name string `json:"unique_name"`
+	Role        string `json:"role"`
 	jwt.StandardClaims
 }
 
-func GenerateJWT(role string, username string) (tokenString string, err error) {
+func GenerateJWT(userID string, role string) (tokenString string, err error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &JWTClaim{
-		Username: username,
-		Role:     role,
+		Unique_name: userID,
+		Role:        role,
 		StandardClaims: jwt.StandardClaims{
+			NotBefore: time.Now().Local().Unix(),
 			ExpiresAt: expirationTime.Unix(),
+			IssuedAt:  time.Now().Local().Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -30,6 +33,10 @@ func GenerateJWT(role string, username string) (tokenString string, err error) {
 }
 
 func ValidateToken(signedToken string) (err error) {
+	// replace "Bearer " to "" in signedToken
+	if strings.Index(signedToken, "Bearer ") != -1 {
+		signedToken = signedToken[7:]
+	}
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&JWTClaim{},

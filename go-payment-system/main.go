@@ -8,20 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PATCH, PUT, DELETE")
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-		c.Next()
-	}
-}
-
 func main() {
 	// Initialize Database
 	//database.Connect("root:root@tcp(localhost:3306)/jwt_demo?parseTime=true") // mysql
@@ -35,7 +21,7 @@ func main() {
 
 func initRouter() *gin.Engine {
 	router := gin.Default()
-	router.Use(CORSMiddleware())
+	router.Use(middlewares.CORSMiddleware())
 	// api := router.Group("/api")
 	// {
 	// 	api.POST("/users/authenticate", controllers.GenerateToken)
@@ -50,7 +36,7 @@ func initRouter() *gin.Engine {
 	routerAuth := router.Use(middlewares.Auth()) // routerAuth 是要登入才能使用的路由, 通過 Auth() 中介軟體驗證
 	{
 		routerAuth.GET("/ping", controllers.Ping)
-		routerAuth.GET("/payement/payout", controllers.GetPayoutData)
+		routerAuth.GET("/payment/payout", controllers.GetPayoutData)
 	}
 	return router
 }

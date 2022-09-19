@@ -1,0 +1,13 @@
+@host = localhost:8080
+
+// Access a Secured API Endpoint
+GET http://{{host}}/payment/payout HTTP/1.1
+content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlVzZXIiLCJyb2xlIjoiNCIsImV4cCI6MTY2MzU2OTQwNSwiaWF0IjoxNjYzNTY1ODA1LCJuYmYiOjE2NjM1NjU4MDV9.yryzAcFK2h52bTjhMksULXJo8oMup5oFF5ILF8QaOkA
+
+# {
+#     "paymentType": "1",
+#     "createdAt": "2022-09-01"
+# }
+
+###

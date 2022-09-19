@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -17,8 +18,10 @@ var dbError error
 func Connect(connectionString string) {
 	// Instance, dbError = gorm.Open(mysql.Open(connectionString), &gorm.Config{}) // mysql
 	Instance, dbError = gorm.Open(sqlserver.Open(connectionString), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info), // info 等級的 log
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // 讓 gorm 不要再表名後面加上 s
+
 		},
 	}) // sqlserver
 

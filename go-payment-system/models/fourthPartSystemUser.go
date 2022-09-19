@@ -2,7 +2,6 @@ package models
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 func (FourthPartSystemUser) TableName() string { // 給 gorm 用的 TableName, 讓開頭變大寫
@@ -10,12 +9,13 @@ func (FourthPartSystemUser) TableName() string { // 給 gorm 用的 TableName, �
 }
 
 type FourthPartSystemUser struct {
-	gorm.Model        // gorm.Model 規範為模型添加了一些默認屬性，例如 id、創建日期、修改日期和刪除日期。
-	Name       string `json:"name"`
-	Username   string `json:"username" gorm:"unique"`
-	Email      string `json:"email" gorm:"unique"`
-	Password   string `json:"password"`
-	Role       string `json:"role"`
+	//gorm.Model        // gorm.Model 規範為模型添加了一些默認屬性，例如 id、創建日期、修改日期和刪除日期。
+	Id       uint   `gorm:"primarykey;column:Id"` // 主鍵 + 欄位名稱
+	Name     string `json:"name"`
+	Username string `json:"username" gorm:"unique"`
+	Email    string `json:"email" gorm:"unique"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 // 註冊時，將密碼加密
